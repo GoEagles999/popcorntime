@@ -21,25 +21,30 @@ const hex2a = (hexx) => {
 
 const lookUpMovie = () => new Promise((resolve, reject) => {
     imdb(myarr[0], (e, data) => {
-        if (e) reject(e)
-        console.log(data)
+        if (e) {
+            console.log(e)
+            reject(e)
+        }
+        arr.push(data)
         resolve(data)
     })
 })
 
 axios
-    .get(`https://api-ropsten.etherscan.io/api?module=account&action=txlist&address=0x0e00d8bc271a6121cbde6d542abc7185c0f9d983&startblock=5217245&endblock=99999999&sort=asc&apikey=UVPS66SXVMYKVM9J8QMU6U86IG2KEN77QU`)
+    .get(`https://api-ropsten.etherscan.io/api?module=account&action=txlist&address=0x0e00d8bc271a6121cbde6d542abc7185c0f9d983&startblock=5217245&endblock=5218245&sort=asc&apikey=UVPS66SXVMYKVM9J8QMU6U86IG2KEN77QU`)
     .then(d => {
         data = d.data
         //console.log(data)
         maxsize = data.result.length;
-        /*data.result.forEach((elem, i) => {
-        })*/
         blueBirdPromise.map(data.result, (item, i) => {
             output = hex2a(item.input.substr(2));
             myarr = output.split(":");
+            console.log(i)
             if (/ev\d{7}\/\d{4}(-\d)?|(ch|co|ev|nm|tt)\d{7}/.test(myarr[0])) {
                 return lookUpMovie(myarr[0])
             }
-        }, {concurrency: 10}).then(d => console.log(d))
+        }, {concurrency: 10}).then(d => {
+            console.log('data',d)
+        })
     })
+    setInterval(_ => console.log(arr.length), 5000)
