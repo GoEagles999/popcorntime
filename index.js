@@ -1,4 +1,5 @@
 const axios = require('axios')
+const arr = []
 const toHex = (str) => {
 	let hex = '';
 	for(var i=0;i<str.length;i++) {
@@ -25,5 +26,7 @@ axios
             output = hex2a(elem.input.substr(2));
             myarr = output.split(":");
             console.log(myarr)
+            arr.push(myarr)
         })
+        console.log(arr)
     })
