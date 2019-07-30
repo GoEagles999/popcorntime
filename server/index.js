@@ -6,7 +6,10 @@ const app = express()
 const port = 3000
 let movies
 
-app.get('/movies', (req, res) => res.json({movies:movies}))
+app.get('/movies', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.json({movies:movies})
+})
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
 
